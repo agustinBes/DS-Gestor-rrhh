@@ -51,6 +51,8 @@ backend/.vscode/
 # =========================================================================
 # MIS EXCLUSIONES PERSONALES (Carpetas en la raíz del proyecto)
 # =========================================================================
-**/backend/**/clases/
+
+**/backend/**/clasesBorrador/
+
 **/backend/**/objectTransfer/
 **/backend/**/gestores/
