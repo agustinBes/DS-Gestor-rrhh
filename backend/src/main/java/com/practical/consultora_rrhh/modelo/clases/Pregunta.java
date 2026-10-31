@@ -31,7 +31,7 @@ public class Pregunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
     @ManyToOne()
-    @JoinColumn(name = "id_factor", referencedColumnName = "codigo")
+    @JoinColumn(name = "id_factor", referencedColumnName = "id")
     private Factor factor;
 @Column()
     private String nombre;

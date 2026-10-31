@@ -28,7 +28,9 @@ import java.util.List;
 public class Competencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+    private Long id;
+    @Column()
+    private String codigo;
     @Column(length = 30)
     private String nombre;
     @Column(length = 300)

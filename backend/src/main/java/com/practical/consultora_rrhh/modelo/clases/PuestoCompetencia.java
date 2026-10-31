@@ -28,11 +28,11 @@ public class PuestoCompetencia {
 private PuestoCompetenciaId id;
     @MapsId("idpuesto")
     @ManyToOne()
-    @JoinColumn(name="id_puesto",referencedColumnName = "codigo")
+    @JoinColumn(name="id_puesto",referencedColumnName = "id")
     private Puesto puesto;
     @MapsId("idcompetencia")
     @ManyToOne()
-    @JoinColumn(name="id_competencia",referencedColumnName = "codigo")
+    @JoinColumn(name="id_competencia",referencedColumnName = "id")
     private Competencia competencia;
     @Column()
     private short ponderacion;

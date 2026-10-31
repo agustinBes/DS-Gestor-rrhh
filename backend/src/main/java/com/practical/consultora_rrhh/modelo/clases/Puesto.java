@@ -23,9 +23,11 @@ import org.hibernate.annotations.TypeBinderType;
 @Entity
 @Table(name="puesto")
 public class Puesto {
-@Id
-@GeneratedValue(strategy= GenerationType.IDENTITY)
-private Long codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column()
+    private String codigo;
 @Column()
 private String nombre;
 @Column()

@@ -30,11 +30,13 @@ import lombok.Setter;
 @Entity()
 @Table(name = "factor")
 public class Factor {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column()
+    private String codigo;
 @ManyToOne()
-@JoinColumn(name = "id_competencia", referencedColumnName = "codigo")
+@JoinColumn(name = "id_competencia", referencedColumnName = "id")
     private Competencia competencia;
 @Column()
     private String nombre;
