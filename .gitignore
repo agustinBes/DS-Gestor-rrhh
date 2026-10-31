@@ -54,5 +54,6 @@ backend/.vscode/
 
 **/backend/**/clasesBorrador/
 
-**/backend/**/objectTransfer/
+**/backend/**/objectTransfer/dao
+**/backend/**/objectTransfer/dtoexcluded
 **/backend/**/gestores/
