@@ -1,7 +1,10 @@
 package com.practical.consultora_rrhh.modelo.clases;
 
+import com.practical.consultora_rrhh.dto.preguntaDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -14,17 +17,15 @@ import java.util.List;
  * de la base de datos. </p>
  * @author Besigniano Agustin
  * @since 1.0
+ *@version 1.0
+ *     Analizar si se requieren métodos específicos para modificar
+ *         sus atributos, en lugar de utilizar setters directamente.
  *
- * <h3>Mejoras y cuestiones pendientes</h3>
- * <ul>
- *     <li>Evaluar la implementación de un constructor que permita
- *         inicializar la entidad a partir de un DTO.</li>
- *     <li>Analizar si se requieren métodos específicos para modificar
- *         sus atributos, en lugar de utilizar setters directamente.</li>
- *   </ul>
  */
 @Getter
 @Setter
+@NoArgsConstructor // Genera el constructor vacío
+@AllArgsConstructor
 @Entity(name = "pregunta")
 public class Pregunta {
     @Id

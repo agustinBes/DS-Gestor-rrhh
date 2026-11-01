@@ -1,7 +1,9 @@
 package com.practical.consultora_rrhh.modelo.clases;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 /**
  *  Representa una posible opcion de respuesta para una pregunta
@@ -14,17 +16,15 @@ import lombok.Setter;
  * de datos.</p>
  * @author Besigniano Agustin
  * @since 1.0
+ *@version 1.0
+ *     Analizar si se requieren métodos específicos para modificar
+ *         sus atributos, en lugar de utilizar setters directamente.
  *
- * <h3>Mejoras y cuestiones pendientes</h3>
- * <ul>
- *     <li>Evaluar la implementación de un constructor que permita
- *         inicializar la entidad a partir de un DTO.</li>
- *     <li>Analizar si se requieren métodos específicos para modificar
- *         sus atributos, en lugar de utilizar setters directamente.</li>
- *   </ul>
  */
 @Getter
 @Setter
+@NoArgsConstructor // Genera el constructor vacío
+@AllArgsConstructor
 @Entity()
 @Table(name="opcion")
 public class Opcion {
