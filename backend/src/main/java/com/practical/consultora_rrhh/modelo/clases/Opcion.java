@@ -21,20 +21,26 @@ import lombok.Setter;
  *         sus atributos, en lugar de utilizar setters directamente.
  *
  */
+@Embeddable
 @Getter
 @Setter
-@NoArgsConstructor // Genera el constructor vacío
+@NoArgsConstructor
 @AllArgsConstructor
-@Entity()
-@Table(name="opcion")
+/*
+* clase cuyos atributos se almacenarán directamente dentro de la tabla de la entidad que la contiene,
+*  sin necesidad de crear una tabla independiente para ella
+* */
 public class Opcion {
-@Id
-@GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long Nro;
-@Column()
+
+    @Column()
+    private short orden;
+
+    @Column()
     private String nombre;
-@Column()
-private String descripcion;
 
+    @Column()
+    private String descripcion;
 
+    @Column()
+    private Integer ponderacion;
 }

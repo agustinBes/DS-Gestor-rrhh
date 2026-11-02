@@ -1,6 +1,5 @@
 package com.practical.consultora_rrhh.modelo.clases;
 
-import com.practical.consultora_rrhh.dto.preguntaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
