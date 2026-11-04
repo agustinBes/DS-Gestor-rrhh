@@ -1,5 +1,7 @@
 package com.practical.consultora_rrhh.modelo.clases;
 
+import com.practical.consultora_rrhh.dto.request.opcionDtoCreate;
+import com.practical.consultora_rrhh.dto.response.opcionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,16 +33,30 @@ import lombok.Setter;
 *  sin necesidad de crear una tabla independiente para ella
 * */
 public class Opcion {
-
+    @Transient
+    private Long idOpcionRespuesta;
+    @Column()
+    private short fila;
     @Column()
     private short orden;
-
-    @Column()
-    private String nombre;
-
-    @Column()
+      @Column()
     private String descripcion;
 
-    @Column()
-    private Integer ponderacion;
+
+public  Opcion(opcionDtoCreate x){
+    fila=x.fila();
+    idOpcionRespuesta=null;
+    orden=x.orden();
+    descripcion=x.descripcion();
+
+}
+    public  Opcion(opcionDto x){
+    fila=x.fila();
+        idOpcionRespuesta= x.id();
+        orden=x.orden();
+        descripcion=x.descripcion();
+
+    }
+
+
 }

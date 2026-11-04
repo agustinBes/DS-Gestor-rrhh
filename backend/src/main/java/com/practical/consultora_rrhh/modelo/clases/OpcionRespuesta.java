@@ -1,5 +1,8 @@
 package com.practical.consultora_rrhh.modelo.clases;
 
+import com.practical.consultora_rrhh.dto.request.opcionDtoCreate;
+import com.practical.consultora_rrhh.dto.request.opcionRespuestaDtoCreate;
+import com.practical.consultora_rrhh.dto.response.opcionRespuestaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +41,8 @@ public class OpcionRespuesta {
  private String nombre;
  @Column()
  private String descripcion;
+ @Column()
+ private boolean activo;
  /*
  * @ElementCollection: indica que es una colección de objetos embebidos.
 @CollectionTable: establece la tabla donde se almacenan.
@@ -47,4 +52,16 @@ public class OpcionRespuesta {
     @ElementCollection
     @CollectionTable(name = "opcion",joinColumns = @JoinColumn(name = "id_opcion_respuesta"))
     private List<Opcion> opciones = new ArrayList<>();
+
+    public  OpcionRespuesta(opcionRespuestaDtoCreate dto) {
+        this.id = null;
+        this.nombre = dto.nombre();
+        this.descripcion = dto.descripcion();
+
+        this.opciones.addAll(
+                dto.opciones().stream()
+                        .map(Opcion::new)
+                        .toList()
+        );
+    }
 }
