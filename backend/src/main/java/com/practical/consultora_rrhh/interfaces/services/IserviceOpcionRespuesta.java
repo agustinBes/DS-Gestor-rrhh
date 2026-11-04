@@ -1,0 +1,14 @@
+package com.practical.consultora_rrhh.interfaces.services;
+
+import com.practical.consultora_rrhh.dto.request.opcionRespuestaDtoCreate;
+import com.practical.consultora_rrhh.dto.response.opcionRespuestaDto;
+import com.practical.consultora_rrhh.interfaces.IserviceCRUD;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
+public interface IserviceOpcionRespuesta extends IserviceCRUD<Long, opcionRespuestaDto, opcionRespuestaDtoCreate> {
+
+    public List<opcionRespuestaDto> obtenerPorNombre(String nombre);
+
+}
