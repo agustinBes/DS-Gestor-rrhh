@@ -25,7 +25,10 @@ CREATE TABLE pregunta(
                          id_factor BIGINT NOT NULL,
                          id_opcion_respuesta BIGINT,
                          FOREIGN KEY (id_factor) REFERENCES  factor(id),
-                         FOREIGN KEY (id_opcion_respuesta) REFERENCES opcion_respuesta(id),
+                        FOREIGN KEY (id_opcion_respuesta) REFERENCES opcion_respuesta(id),
+    -- Garantiza que la combinacion pueda ser referenciada mediante una clave foranea compuesta.
+                        CONSTRAINT uq_pregunta_opcion_respuesta
+                        UNIQUE (id, id_opcion_respuesta),
                          nombre      VARCHAR(30) NOT NULL ,
                          pregunta VARCHAR(70) NOT NULL,
                          descripcion VARCHAR(300),
@@ -39,11 +42,12 @@ CREATE TABLE ponderacion_opcion (
 
                                     PRIMARY KEY (id_pregunta,id_opcion_respuesta,fila),
 
-                                    FOREIGN KEY (id_pregunta)        REFERENCES pregunta(id),
+                                   
                                     FOREIGN KEY (id_pregunta, id_opcion_respuesta)
                                         REFERENCES pregunta(id, id_opcion_respuesta),
-                                    CONSTRAINT uq_pregunta_opcion_respuesta
-                                        UNIQUE (id, id_opcion_respuesta),
+                --Garantiza que la ponderación corresponda a la misma configuración de opciones asociada a esa pregunta.
+                                    CONSTRAINT uq_pregunta_opcion_respuesta_ponderacion_opcion
+                                        UNIQUE (id_pregunta, id_opcion_respuesta),
 
                                     FOREIGN KEY (id_opcion_respuesta, fila)
                                         REFERENCES opcion(id_opcion_respuesta, fila));

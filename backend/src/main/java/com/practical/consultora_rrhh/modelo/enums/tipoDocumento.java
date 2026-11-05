@@ -4,5 +4,13 @@ public enum tipoDocumento {
     DNI,
     LE,
     LC,
-    PP
+    PP;
+
+    public static tipoDocumento desdeString(String valor) {
+        return tipoDocumento.valueOf(valor.toUpperCase());
+    }
+    public static String desdeTipo(tipoDocumento x) {
+        return x.name();
+    }
 }
+

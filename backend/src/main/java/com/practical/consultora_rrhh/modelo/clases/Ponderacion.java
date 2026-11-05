@@ -12,12 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Embeddable()
 public class Ponderacion{
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "id_opcion_respuesta", referencedColumnName = "id_opcion_respuesta"),
-            @JoinColumn(name = "fila", referencedColumnName = "fila")
-    })
-    private Opcion opcion;
+
+    @Column(name = "id_opcion_respuesta")
+    private Long opcionRespuesta;
+
+    @Column()
+    private short fila;
 
     @Column(name="ponderacion")
     private Integer puntaje;

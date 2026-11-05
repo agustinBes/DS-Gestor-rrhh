@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConsultoraRrhhApplication {
 
-	public static void main(String[] args) {
+	static void main(String[] args) {
 		SpringApplication.run(ConsultoraRrhhApplication.class, args);
 		System.out.println("Hello World creando proyecto");
 	}

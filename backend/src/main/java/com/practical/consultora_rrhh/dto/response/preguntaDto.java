@@ -1,5 +1,7 @@
 package com.practical.consultora_rrhh.dto.response;
 
+import java.util.List;
+
 public record preguntaDto(
         Long id,
         factorDto factor,
