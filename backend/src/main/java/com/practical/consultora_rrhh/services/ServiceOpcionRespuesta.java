@@ -4,24 +4,29 @@ import com.practical.consultora_rrhh.Util.TextoUtils;
 import com.practical.consultora_rrhh.dto.request.opcionRespuestaDtoCreate;
 import com.practical.consultora_rrhh.dto.response.opcionDto;
 import com.practical.consultora_rrhh.dto.response.opcionRespuestaDto;
-import com.practical.consultora_rrhh.excepciones.especializadas.clases.OpcionRespuestaNotFoundException;
 import com.practical.consultora_rrhh.excepciones.genericas.CollectionNotFoundException;
+import com.practical.consultora_rrhh.interfaces.dao.IOpcionRespuestaDao;
 import com.practical.consultora_rrhh.interfaces.services.IserviceOpcionRespuesta;
 import com.practical.consultora_rrhh.modelo.clases.Opcion;
 import com.practical.consultora_rrhh.modelo.clases.OpcionRespuesta;
-import com.practical.consultora_rrhh.repositorio.opcionRespuestaRepository;
 import com.practical.consultora_rrhh.validaciones.OpcionRespuestaValidators;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**Servicio para gestionar la logica de negocio y validaciones de datos correspondientes
- * a los campos de una opciones de respuesta
- * Internamente controla las validaciones y logica de la clase Opcion tambien
+/**
+ *  Servicio encargado de gestionar la lógica de negocio y las validaciones
+ * pertinentes a una {@link OpcionRespuesta}.
  *
- * Utilizamos clases validators para mantener el codigo del servicio lo mas limpio posible
+ * <p>Las validaciones comprenden aspectos relacionados con el formato,
+ * tipo de datos y restricciones de unicidad de determinados campos.</p>
+ *
+ * <p>También gestiona las operaciones y validaciones relacionadas con la
+ * entidad {@link Opcion}, cuya existencia está sujeta al ciclo de vida
+ * de la {@link OpcionRespuesta}.</p>
+ *
+ * <p>Se delegan las validaciones en clases Validators para mantener el
+ * código organizado y facilitar su mantenimiento.</p>
  *
  * @author  Besigniano Agustin
  * @Since 1.0
@@ -29,58 +34,71 @@ import java.util.List;
 @Service
 public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
 
-    private final opcionRespuestaRepository repository;
-    // implementar mas adelante la eliminacion private final serviceAuditoria auditoria;
+     private final IOpcionRespuestaDao dao;
     private final OpcionRespuestaValidators validators;
 
-    public ServiceOpcionRespuesta(opcionRespuestaRepository repository, OpcionRespuestaValidators validators) {
-        this.repository = repository;
+    public ServiceOpcionRespuesta(IOpcionRespuestaDao dao, OpcionRespuestaValidators validators) {
+        this.dao = dao;
         this.validators = validators;
     }
-//--------------------------------------------------------------------------------
-
     //--------------------------------------------------------------------------------
+
+    /**
+     Valida el formato de los campos y verifica que no existan conflictos
+     * de duplicidad en la base de datos.
+     *
+     * <p>Ante cualquier incumplimiento, lanza las excepciones personalizadas
+     * correspondientes. Si las validaciones son satisfactorias, registra una
+     * nueva {@link OpcionRespuesta} junto con su lista de {@link Opcion}.</p>
+     */
     @Override
     public opcionRespuestaDto guardar(opcionRespuestaDtoCreate dto) {
 
         validators.existeNombre(TextoUtils.normalizar(dto.nombre()));
-        validators.validarOpciones(dto.opciones());
+        validators.validarFormatoOpciones(dto.opciones());
 
         OpcionRespuesta entidad = new OpcionRespuesta(dto);
 
-        OpcionRespuesta guardada = repository.save(entidad);
+        OpcionRespuesta guardada = dao.guardar(entidad);
 
         return new opcionRespuestaDto(guardada);
     }
 //--------------------------------------------------------------------------------
 
+    /**
+     * La siguiente funcion se encarga de actualizar(parcialmente) la entidad persistida en la bdd.
+     *
+     * @param id Identificador de la entidad persistida en la bdd a modificar. Verificamos existencia como primer validacion
+     * @return
+     */
     @Override
-    @Transactional
     public opcionRespuestaDto actualizar(Long id, opcionRespuestaDtoCreate dto) {
-        OpcionRespuesta actual = validators.existeOpcionRespuesta(id);
-        boolean descripcion;
-        descripcion = validators.validarAlteracionTexto(actual.getDescripcion(), dto.descripcion());
-        validators.validarAlteracionCantidadOpciones(actual.getOpciones().size(), dto.opciones());
-        validators.validarOpciones(dto.opciones());
-        if (descripcion) {
-            actual.setDescripcion(dto.descripcion());
-        }
-        List<opcionDto> aux = validators.ValidarAlteracionOpcion(id, actual.getOpciones(), dto.opciones());
 
-        if (!aux.isEmpty()) {
-            actual.setOpciones(
-                    aux.stream()
-                            .map(Opcion::new)
-                            .toList());
+        OpcionRespuesta actual = validators.existeOpcionRespuesta(id);
+
+       boolean descripcion=validators.validarFormatoModificaciones(id,actual,dto);
+
+        List<opcionDto> aux = validators.ValidarAlteracionOpcion(id, actual.getOpciones(), dto.opciones());
+        OpcionRespuesta nueva;
+
+        if(descripcion || !aux.isEmpty()) {
+            nueva = dao.actualizar(descripcion ? dto.descripcion() : null, actual, aux);
+            return new opcionRespuestaDto(nueva);
         }
         return new opcionRespuestaDto(actual);
-    }
+
+        }
 
     //----------------------------------------------------------
+
+    /**
+     * Listar todas las opciones de respuesta existentes de la Base de datos
+     * @return Puede contener elementos o representar la lista vacia
+     */
     @Override
     public List<opcionRespuestaDto> obtenerTodos() {
         List<opcionRespuestaDto> lista;
-        lista = repository.findAll()
+        lista = dao.obtenerTodos()
                 .stream()
                 .map(opcionRespuestaDto::new)
                 .toList();
@@ -90,30 +108,38 @@ public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
         return lista;
     }
 
+    /**
+     * Validar existencia de la entidad en la BDD y eliminarla
+     *Implementar: Generar registro de auditoria
+     * @param id
+     */
     @Override
     public void eliminar(Long id) {
-        OpcionRespuesta aux = repository.findById(id)
-                .orElseThrow(() ->
-                        new OpcionRespuestaNotFoundException("No existe opcion de respuesta con el ID:" + id));
-        // auditoria.generarAuditoria(PREGUNTA, usuario, aux.getNombre());
-        repository.delete(aux);
+        OpcionRespuesta aux = validators.existeOpcionRespuesta(id);
+        dao.eliminar(aux);
     }
 
-    //--------------------------------------------------------------
+    /**
+     * Obtener una opcion de respuesta o lanzar mensaje si no existe
+     */
     @Override
     public opcionRespuestaDto obtenerPorId(Long id) {
 
-        OpcionRespuesta aux = repository.findById(id)
-                .orElseThrow(() ->
-                        new OpcionRespuestaNotFoundException("No se encontró opcion de respuesta con el ID:" + id));
+        OpcionRespuesta aux = validators.existeOpcionRespuesta(id);
 
         return new opcionRespuestaDto(aux);
     }
 
+    /**
+     * Obtiene una lista de opciones de respuesta cuyo nombre coincide parcialmente
+     * con el texto proporcionado.
+     *
+     * @param nombre texto utilizado como filtro de búsqueda por coincidencia parcial.
+     */
     @Override
     public List<opcionRespuestaDto> obtenerPorNombre(String nombre) {
         List<opcionRespuestaDto> lista;
-        lista = repository.findByNombreContaining(nombre)
+        lista = dao.obtenerPorNombreParcial(nombre)
                 .stream()
                 .map(opcionRespuestaDto::new)
                 .toList();

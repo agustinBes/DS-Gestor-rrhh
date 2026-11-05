@@ -3,11 +3,10 @@ package com.practical.consultora_rrhh.interfaces;
 import java.util.List;
 import java.util.Optional;
 
-public interface IDaoCRUD<Id, Entity> {
+public interface IDaoBase<Id, Entity> {
 
     Entity guardar(Entity entity);
 
-    Entity actualizar(Id id, Entity entity);
 
     List<Entity> obtenerTodos();
 

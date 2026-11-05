@@ -1,7 +1,9 @@
 package com.practical.consultora_rrhh.validaciones;
 
 import com.practical.consultora_rrhh.Util.TextoUtils;
+import com.practical.consultora_rrhh.dao.OpcionRespuestaDaoImpl;
 import com.practical.consultora_rrhh.dto.request.opcionDtoCreate;
+import com.practical.consultora_rrhh.dto.request.opcionRespuestaDtoCreate;
 import com.practical.consultora_rrhh.dto.response.opcionDto;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.CantidadOpcionesInvalidException;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.DescripcionDuplicatedException;
@@ -10,7 +12,6 @@ import com.practical.consultora_rrhh.excepciones.especializadas.atributos.OrdenN
 import com.practical.consultora_rrhh.excepciones.especializadas.clases.OpcionRespuestaNotFoundException;
 import com.practical.consultora_rrhh.modelo.clases.Opcion;
 import com.practical.consultora_rrhh.modelo.clases.OpcionRespuesta;
-import com.practical.consultora_rrhh.repositorio.opcionRespuestaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -30,31 +31,32 @@ import java.util.*;
  */
 @Component
 public class OpcionRespuestaValidators {
-    private final opcionRespuestaRepository repository;
+    private final OpcionRespuestaDaoImpl dao;
     private final OpcionValidators opcionValidators;
 
-    public OpcionRespuestaValidators(opcionRespuestaRepository repository, OpcionValidators opcionValidators) {
-        this.repository = repository;
+    public OpcionRespuestaValidators(OpcionRespuestaDaoImpl dao, OpcionValidators opcionValidators) {
+        this.dao= dao;
         this.opcionValidators = opcionValidators;
     }
 
-//----------------------------------------------------------
-//Parra el metodo de modificacion comprobar la existencia de la opcion x id y retornarlo
+    /**
+     * Verificar existencia de la entidad persistida que se desea modificar         *
+     */
     public OpcionRespuesta existeOpcionRespuesta(Long id) {
-        return repository.findById(id)
+        return dao.obtenerPorId(id)
                 .orElseThrow(() ->
     new OpcionRespuestaNotFoundException("El id: "+id+" no corresponde a una opcion de respuesta valida"));}
 
 //----------------------------------------------------------
-// comprobar la disponibilidad del nombre para creacion
+// comprobar la disponibilidad del nombre
     public void existeNombre(String nombre) {
-      if(   repository.existsByNombreIgnoreCase(nombre))
-      {throw new NombreDuplicatedException("El nombre ya esta en uso");}
+        if(dao.existePorNombreInsensible(nombre))
+        {throw new NombreDuplicatedException("El nombre ya esta en uso");}
     }
 // comprobar la disponibilidad del nombre y texto para modificacion
 public boolean validarAlteracionTexto(String actual, String nuevo) {
-        boolean modificacion= TextoUtils.comparar(actual,nuevo);
-        if(modificacion){return false;}
+        boolean coinciden= TextoUtils.comparar(actual,nuevo);
+        if(coinciden){return false;}
 existeNombre(nuevo);
             return true;}
 
@@ -63,7 +65,7 @@ existeNombre(nuevo);
 //-------------------------------------------------------------------------
     // validar Opciones asociadas a la OpcionRespuesta para la creacion
 
-    public void validarOpciones(List<opcionDtoCreate> opcion) {
+    public void validarFormatoOpciones(List<opcionDtoCreate> opcion) {
 
         if (!opcionValidators.ordenConsecutivo(opcion)) {
             throw new OrdenNoConsecutivoException(
@@ -75,12 +77,19 @@ existeNombre(nuevo);
 new DescripcionDuplicatedException("La descripciones recibida ya existe en el sistema");
         }
     }
+    /*
+    * */
 public void validarAlteracionCantidadOpciones(Integer actual, List<opcionDtoCreate> modificacion) {
         if(actual!=opcionValidators.cantidadOpciones(modificacion)){
             throw
         new CantidadOpcionesInvalidException("No esta permitido agregar ni eliminar opciones de las que ya existian");}
 
         }
+
+    /**
+     * Detectar alteraciones de descripcion y orden de visualizacion de las opciones
+     */
+
     public List<opcionDto> ValidarAlteracionOpcion(Long id,List<Opcion> actual, List<opcionDtoCreate> dto) {
         List<opcionDtoCreate> aux = new ArrayList<>();
         Integer modificacion = 0;
@@ -98,15 +107,26 @@ public void validarAlteracionCantidadOpciones(Integer actual, List<opcionDtoCrea
         if(modificacion==0){
             return new ArrayList<>();}
 
-this.validarOpciones(aux);
+this.validarFormatoOpciones(aux);
                    return aux.stream()
                     .map(o -> new opcionDto(
                             o,id))
                     .toList();
         }
 
+    /**
+     *        Detectar modificaciones de la descripcion
+     *        Detectar si la cantidad de {@link Opcion} es la misma que la persistida en la bdd durante la creacion
+     *        Detectar si el nuevo formato de las opciones  es adecuado
+     */
+    public boolean validarFormatoModificaciones(Long id, OpcionRespuesta actual, opcionRespuestaDtoCreate dto) {
+      boolean descripcion;
+        descripcion = this.validarAlteracionTexto(actual.getDescripcion(), dto.descripcion());
+        this.validarAlteracionCantidadOpciones(actual.getOpciones().size(), dto.opciones());
+        this.validarFormatoOpciones(dto.opciones());
 
-    }
+        return descripcion;  }
+}
 
     //-----------------------------------------------------------
 
