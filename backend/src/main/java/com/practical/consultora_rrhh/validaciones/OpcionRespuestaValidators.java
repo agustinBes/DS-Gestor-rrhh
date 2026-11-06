@@ -7,12 +7,12 @@ import com.practical.consultora_rrhh.dto.request.opcionRespuestaDtoCreate;
 import com.practical.consultora_rrhh.dto.response.opcionDto;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.CantidadOpcionesInvalidException;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.DescripcionDuplicatedException;
-import com.practical.consultora_rrhh.excepciones.especializadas.atributos.NombreDuplicatedException;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.OrdenNoConsecutivoException;
 import com.practical.consultora_rrhh.excepciones.especializadas.clases.OpcionRespuestaNotFoundException;
 import com.practical.consultora_rrhh.modelo.clases.Opcion;
 import com.practical.consultora_rrhh.modelo.clases.OpcionRespuesta;
-import org.springframework.stereotype.Component;
+import com.practical.consultora_rrhh.validaciones.genericas.ValidatorsNombreDuplicado;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 /**
@@ -29,12 +29,13 @@ import java.util.*;
 * @author  Besigniano Agustin
  @since 1.0
  */
-@Component
-public class OpcionRespuestaValidators {
+@Service
+public class OpcionRespuestaValidators  extends ValidatorsNombreDuplicado {
     private final OpcionRespuestaDaoImpl dao;
     private final OpcionValidators opcionValidators;
 
     public OpcionRespuestaValidators(OpcionRespuestaDaoImpl dao, OpcionValidators opcionValidators) {
+      super();
         this.dao= dao;
         this.opcionValidators = opcionValidators;
     }
@@ -48,12 +49,13 @@ public class OpcionRespuestaValidators {
     new OpcionRespuestaNotFoundException("El id: "+id+" no corresponde a una opcion de respuesta valida"));}
 
 //----------------------------------------------------------
-// comprobar la disponibilidad del nombre
+
+
     public void existeNombre(String nombre) {
-        if(dao.existePorNombreInsensible(nombre))
-        {throw new NombreDuplicatedException("El nombre ya esta en uso");}
+        super.existeNombre(dao.existePorNombreInsensible(nombre));
     }
-// comprobar la disponibilidad del nombre y texto para modificacion
+
+  // comprobar la disponibilidad del nombre y texto para modificacion
 public boolean validarAlteracionTexto(String actual, String nuevo) {
         boolean coinciden= TextoUtils.comparar(actual,nuevo);
         if(coinciden){return false;}

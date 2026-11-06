@@ -3,7 +3,7 @@ package com.practical.consultora_rrhh.interfaces.services;
 import com.practical.consultora_rrhh.dto.FiltrosBusqueda.PreguntaFiltrosDto;
 import com.practical.consultora_rrhh.dto.request.preguntaDtoCreate;
 import com.practical.consultora_rrhh.dto.response.preguntaDto;
-import com.practical.consultora_rrhh.interfaces.IserviceCRUD;
+import com.practical.consultora_rrhh.interfaces.genericas.IserviceCRUD;
 
 import java.util.List;
 

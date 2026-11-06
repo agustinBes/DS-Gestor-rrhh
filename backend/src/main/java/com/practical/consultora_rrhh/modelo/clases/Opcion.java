@@ -33,8 +33,6 @@ import lombok.Setter;
 *  sin necesidad de crear una tabla independiente para ella
 * */
 public class Opcion {
-    @Transient
-    private Long idOpcionRespuesta;
     @Column()
     private short fila;
     @Column()
@@ -45,14 +43,12 @@ public class Opcion {
 
 public  Opcion(opcionDtoCreate x){
     fila=x.fila();
-    idOpcionRespuesta=null;
     orden=x.orden();
     descripcion=x.descripcion();
 
 }
     public  Opcion(opcionDto x){
     fila=x.fila();
-        idOpcionRespuesta= x.id();
         orden=x.orden();
         descripcion=x.descripcion();
 
