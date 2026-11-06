@@ -12,42 +12,32 @@ collection:
     meta:
       id: req_d3b5968d6e30414c97742d167ed05f3e
       created: 1793745480213
-      modified: 1793764319382
+      modified: 1793953159041
       isPrivate: false
       description: ""
       sortKey: -1793745480213
     method: POST
     body:
       mimeType: application/json
-      text: >-
+      text: >
         {
-          "nombre": "Nivel de dominio",
-          "descripcion": "Evalúa elrado de dominio y autonomía que demuestra una persona al realizar una determinada actividad.",
+          "nombre": "hgdd",
+          "descripcion": "Evalúa la capacidad de colaborar con otras personas y contribuir al cumplimiento de objetivos grupales.",
           "opciones": [
             {
               "fila": 0,
               "orden": 1,
-              "descripcion": "No pose conocimientos"
+              "descripcion": "gsadf"
             },
             {
               "fila": 1,
               "orden": 2,
-              "descripcion": "Posee cnocimientos básicos"
+              "descripcion": "asff"
             },
             {
               "fila": 2,
-              "orden": 3,
-              "descripcion": "Requiere supervisión frecuente"
-            },
-            {
-              "fila": 3,
               "orden": 4,
-              "descripcion": "Realiza la actividad de forma autónoma"
-            },
-            {
-              "fila": 4,
-              "orden": 5,
-              "descripcion": "Domina la actividad y puede capacitar a otros"
+              "descripcion": "Promueve activamente la colaboración"
             }
           ]
         }
