@@ -31,35 +31,17 @@ private tipoAuditoria auditoria;
 @Column(name = "registro_actividad")
 private LocalDateTime fecha;
 @ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "id_consultor")
-private Consultor responsable;
+@JoinColumn(referencedColumnName = "id",name = "id_consultor")
+private Consultor responsible;
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-/*
-public Auditoria(auditoriaDto a){
-    id=a.Nro().longValue();
-    RegistroEliminado=a.nombre();
-    auditoria=tipoAuditoria.valueOf(a.tipo());
-    fecha=LocalDateTime.now();
-responsable=new Consultor(a.consultor());
-}*/
-=======
->>>>>>> 68fe2f3 (recuperando cambios de modelos, DTO y gestores)
 
 public Auditoria(auditoriaDto dto){
     id=dto.id();
     RegistroEliminado=dto.registro();
     auditoria=tipoAuditoria.valueOf(dto.tipo());
     fecha=dto.fecha();
-<<<<<<< HEAD
-    responsable=new Consultor(dto.consultor());
+    responsible =new Consultor();
 }
-=======
-    responsable=new Consultor();
-}
->>>>>>> Stashed changes
->>>>>>> 68fe2f3 (recuperando cambios de modelos, DTO y gestores)
+
 
 }
