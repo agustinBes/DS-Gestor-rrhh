@@ -7,6 +7,7 @@ import com.practical.consultora_rrhh.services.ServiceOpcionRespuesta;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @author  Besigniano Agustin
  * @since 1.0
  */
-@Service
+@Controller
 @RestController
 @RequestMapping("/opciones-de-respuesta")
 public class ControllerOpcionRespuesta implements IcontrollerOpcionRespuesta {

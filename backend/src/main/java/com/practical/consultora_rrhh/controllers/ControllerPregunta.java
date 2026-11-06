@@ -8,11 +8,12 @@ import com.practical.consultora_rrhh.interfaces.services.IservicePregunta;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@Controller
 @RestController
 @RequestMapping("/preguntas")
 public class ControllerPregunta implements IcontrollerPregunta {
