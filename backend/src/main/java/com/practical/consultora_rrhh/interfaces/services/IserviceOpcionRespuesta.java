@@ -2,7 +2,6 @@ package com.practical.consultora_rrhh.interfaces.services;
 
 import com.practical.consultora_rrhh.dto.request.opcionRespuestaDtoCreate;
 import com.practical.consultora_rrhh.dto.response.opcionRespuestaDto;
-import com.practical.consultora_rrhh.interfaces.genericas.IserviceCRUD;
 
 import java.util.List;
 

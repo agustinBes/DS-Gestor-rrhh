@@ -1,6 +1,7 @@
-package com.practical.consultora_rrhh.interfaces.genericas;
+package com.practical.consultora_rrhh.interfaces.auxiliares;
 
-public interface IvalidarNombreCodigo {
+public interface IvalidarNombreCodigoDao {
     boolean existePorNombreInsensible(String nombre);
     boolean existeCodigoInsensible(String codigo);
+
 }

@@ -1,5 +1,6 @@
 package com.practical.consultora_rrhh.dto.request;
 
+import com.practical.consultora_rrhh.dto.response.factorDto;
 import com.practical.consultora_rrhh.dto.response.opcionRespuestaDto;
 import com.practical.consultora_rrhh.modelo.clases.OpcionRespuesta;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ import java.util.List;
 public record preguntaDtoCreate(
 
         @NotNull(message = "Se requiere un factor")
-        Long factor,
+        factorDto factor,
 
         @NotBlank(message = "Se requiere un título para guardar la pregunta")
         @Size(max = 30, message = "Longitud del título excedida")

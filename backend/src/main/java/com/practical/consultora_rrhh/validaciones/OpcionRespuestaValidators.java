@@ -8,10 +8,8 @@ import com.practical.consultora_rrhh.dto.response.opcionDto;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.CantidadOpcionesInvalidException;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.DescripcionDuplicatedException;
 import com.practical.consultora_rrhh.excepciones.especializadas.atributos.OrdenNoConsecutivoException;
-import com.practical.consultora_rrhh.excepciones.especializadas.clases.OpcionRespuestaNotFoundException;
 import com.practical.consultora_rrhh.modelo.clases.Opcion;
 import com.practical.consultora_rrhh.modelo.clases.OpcionRespuesta;
-import com.practical.consultora_rrhh.validaciones.genericas.ValidatorsNombreDuplicado;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -30,7 +28,7 @@ import java.util.*;
  @since 1.0
  */
 @Service
-public class OpcionRespuestaValidators  extends ValidatorsNombreDuplicado {
+public class OpcionRespuestaValidators  {
     private final OpcionRespuestaDaoImpl dao;
     private final OpcionValidators opcionValidators;
 
@@ -43,16 +41,15 @@ public class OpcionRespuestaValidators  extends ValidatorsNombreDuplicado {
     /**
      * Verificar existencia de la entidad persistida que se desea modificar         *
      */
-    public OpcionRespuesta existeOpcionRespuesta(Long id) {
-        return dao.obtenerPorId(id)
-                .orElseThrow(() ->
-    new OpcionRespuestaNotFoundException("El id: "+id+" no corresponde a una opcion de respuesta valida"));}
+    public OpcionRespuesta validarOpcionRespuesta(Long id) {
+return  dao.obtenerPorId(id);}
+
 
 //----------------------------------------------------------
 
 
     public void existeNombre(String nombre) {
-        super.existeNombre(dao.existePorNombreInsensible(nombre));
+       dao.existePorNombreInsensible(nombre);
     }
 
   // comprobar la disponibilidad del nombre y texto para modificacion

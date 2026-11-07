@@ -51,7 +51,7 @@ public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
      * correspondientes. Si las validaciones son satisfactorias, registra una
      * nueva {@link OpcionRespuesta} junto con su lista de {@link Opcion}.</p>
      */
-    @Override
+
     public opcionRespuestaDto guardar(opcionRespuestaDtoCreate dto) {
 
         validators.existeNombre(TextoUtils.normalizar(dto.nombre()));
@@ -71,10 +71,10 @@ public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
      * @param id Identificador de la entidad persistida en la bdd a modificar. Verificamos existencia como primer validacion
      * @return
      */
-    @Override
+
     public opcionRespuestaDto actualizar(Long id, opcionRespuestaDtoCreate dto) {
 
-        OpcionRespuesta actual = validators.existeOpcionRespuesta(id);
+        OpcionRespuesta actual = validators.validarOpcionRespuesta(id);
 
        boolean descripcion=validators.validarFormatoModificaciones(id,actual,dto);
 
@@ -95,7 +95,7 @@ public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
      * Listar todas las opciones de respuesta existentes de la Base de datos
      * @return Puede contener elementos o representar la lista vacia
      */
-    @Override
+
     public List<opcionRespuestaDto> obtenerTodos() {
         List<opcionRespuestaDto> lista;
         lista = dao.obtenerTodos()
@@ -113,22 +113,26 @@ public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
      *Implementar: Generar registro de auditoria
      * @param id
      */
-    @Override
+
     public void eliminar(Long id) {
-        OpcionRespuesta aux = validators.existeOpcionRespuesta(id);
+        OpcionRespuesta aux = validators.validarOpcionRespuesta(id);
         dao.eliminar(aux);
     }
 
     /**
      * Obtener una opcion de respuesta o lanzar mensaje si no existe
      */
-    @Override
+
     public opcionRespuestaDto obtenerPorId(Long id) {
 
-        OpcionRespuesta aux = validators.existeOpcionRespuesta(id);
+        OpcionRespuesta aux = validators.validarOpcionRespuesta(id);
 
         return new opcionRespuestaDto(aux);
     }
+
+    public boolean validarExistencia(Long id) {
+        dao.existePorId(id);
+        return true;  }
 
     /**
      * Obtiene una lista de opciones de respuesta cuyo nombre coincide parcialmente
@@ -136,7 +140,6 @@ public class ServiceOpcionRespuesta implements IserviceOpcionRespuesta {
      *
      * @param nombre texto utilizado como filtro de búsqueda por coincidencia parcial.
      */
-    @Override
     public List<opcionRespuestaDto> obtenerPorNombre(String nombre) {
         List<opcionRespuestaDto> lista;
         lista = dao.obtenerPorNombreParcial(nombre)

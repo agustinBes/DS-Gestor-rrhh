@@ -1,4 +1,4 @@
-package com.practical.consultora_rrhh.interfaces.genericas;
+package com.practical.consultora_rrhh.interfaces.services;
 
 import java.util.List;
 
@@ -8,4 +8,5 @@ DtoResponse actualizar(Id id,DtoRequest dto);
 List<DtoResponse>  obtenerTodos();
 void eliminar(Id id);
 DtoResponse obtenerPorId(Id id);
+boolean validarExistencia(Long id);
 }

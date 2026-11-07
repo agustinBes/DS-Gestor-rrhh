@@ -1,4 +1,4 @@
-package com.practical.consultora_rrhh.interfaces.genericas;
+package com.practical.consultora_rrhh.interfaces.controllers;
 
 import org.springframework.http.ResponseEntity;
 

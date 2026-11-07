@@ -8,9 +8,9 @@ import java.util.Objects;
 @Embeddable()
 public class PuestoCompetenciaId implements Serializable {
     @Column(name="id_competencia")
-    private Long idcompetencia;
+    private Long idCompetencia;
      @Column(name="id_puesto")
-    private Long idpuesto;
+    private Long idPuesto;
 
      public PuestoCompetenciaId() {}
 
@@ -18,11 +18,11 @@ public class PuestoCompetenciaId implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PuestoCompetenciaId that = (PuestoCompetenciaId) o;
-        return Objects.equals(idcompetencia, that.idcompetencia) && Objects.equals(idpuesto, that.idpuesto);
+        return Objects.equals(idCompetencia, that.idCompetencia) && Objects.equals(idPuesto, that.idPuesto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idcompetencia, idpuesto);
+        return Objects.hash(idCompetencia, idPuesto);
     }
 }

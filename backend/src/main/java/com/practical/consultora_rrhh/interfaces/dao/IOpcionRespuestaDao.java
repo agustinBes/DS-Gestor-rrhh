@@ -1,7 +1,6 @@
 package com.practical.consultora_rrhh.interfaces.dao;
 
 import com.practical.consultora_rrhh.dto.response.opcionDto;
-import com.practical.consultora_rrhh.interfaces.genericas.IDaoBase;
 import com.practical.consultora_rrhh.modelo.clases.OpcionRespuesta;
 
 import java.util.List;

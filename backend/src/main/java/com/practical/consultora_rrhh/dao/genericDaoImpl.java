@@ -2,10 +2,20 @@ package com.practical.consultora_rrhh.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.aop.target.dynamic.BeanFactoryRefreshableTargetSource;
 import org.springframework.stereotype.Repository;
+
+/**
+ *Gestinamos las consultas de duplicados para las entidades factor,competencia y puesto
+ * de forma manual para atributos Codigo y Nombre para evitar repeticion de codigo
+ *
+ * @autor Besigniano Agutin
+ * @Since 1.0
+ */
 
 @Repository
 public abstract class genericDaoImpl<T> {
+
 
     @PersistenceContext
     private EntityManager em;
@@ -16,7 +26,7 @@ public abstract class genericDaoImpl<T> {
         this.entidad = entidad;
     }
 
-    public boolean existePorNombreInsensible(String nombre) {
+    public boolean existeNombrePorFactorInsensible(String nombre) {
         return em.createQuery(
                         "SELECT COUNT(e) FROM " + entidad.getSimpleName() +
                                 " e WHERE LOWER(e.nombre) = LOWER(:nombre)",
@@ -34,4 +44,5 @@ public abstract class genericDaoImpl<T> {
                 .setParameter("codigo", codigo)
                 .getSingleResult() > 0;
     }
+   
 }

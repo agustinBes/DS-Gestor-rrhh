@@ -2,7 +2,7 @@ package com.practical.consultora_rrhh.excepciones;
 
 import com.practical.consultora_rrhh.excepciones.genericas.AtributoInvalidException;
 import com.practical.consultora_rrhh.excepciones.genericas.DuplicatedException;
-import com.practical.consultora_rrhh.excepciones.genericas.ObjectNotFoundException;
+import com.practical.consultora_rrhh.excepciones.genericas.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<String> manejarObjectNotFound(ObjectNotFoundException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> manejarObjectNotFound(EntityNotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());

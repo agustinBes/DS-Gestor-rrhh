@@ -7,40 +7,41 @@ import com.practical.consultora_rrhh.modelo.clases.Pregunta;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 @Repository
-public class PreguntaDaoImpl  extends genericDaoImpl<Pregunta> implements IPreguntaDao {
+public class PreguntaDaoImpl  implements IPreguntaDao {
 
     private final preguntaRepository repository;
     public PreguntaDaoImpl(preguntaRepository repository) {
-        super(Pregunta.class);
+
         this.repository = repository;
     }
 
 
-    @Override
     public List<Pregunta> buscar(PreguntaFiltrosDto filtros) {
         return List.of();
     }
-    @Override
+//-----------------------------------------------------------------------------------------------
+    public boolean existeNombrePorFactorInsensible(String nombre,Long idFactor,Long idCompetencia) {
+return  repository.existsByNombreIgnoreCaseAndFactor_IdAndFactor_Competencia(nombre,idFactor,idCompetencia);
+    }
+public boolean existePreguntaPorFactorInsensible(String nombre, Long idFactor, Long competencia) {
+        return repository.existsByPreguntaIgnoreCaseAndFactor_IdAndFactor_Competencia_Id(nombre,idFactor,competencia);}
+
+
     public Pregunta guardar(Pregunta pregunta) {
         return repository.save(pregunta);
     }
 
-    @Override
     public List<Pregunta> obtenerTodos() {
         return repository.findAll();
     }
 
-    @Override
     public void eliminar(Pregunta pregunta) {
-
-    }
-
-    @Override
-    public Optional<Pregunta> obtenerPorId(Long id) {
-        return repository.findById(id);
-    }
+repository.delete(pregunta);}
+        //-----------------------------------------------------------------------------------
+        public Pregunta obtenerPorId(Long id) {
+        return repository.findByIdOrThrow(id,"la pregunta");}
+    public void existePorId(Long id) {repository.existsByIdOrThrow(id,"la pregunta");}
 
 
 }

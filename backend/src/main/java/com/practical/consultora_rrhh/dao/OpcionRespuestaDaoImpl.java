@@ -58,25 +58,13 @@ public class OpcionRespuestaDaoImpl implements IOpcionRespuestaDao {
                             .map(Opcion::new)
                             .toList());
         }
-          return actual;
-    }
+          return actual;}
 
-
-
-    @Override
     public List<OpcionRespuesta> obtenerTodos() {
         return repository.findAll();
     }
 
-    @Override
-    public void eliminar(OpcionRespuesta opcionRespuesta) {
- repository.delete(opcionRespuesta);}
-
-    @Override
-    public Optional<OpcionRespuesta> obtenerPorId(Long id) {
-        return repository.findById(id);
-    }
-
+    public void eliminar(OpcionRespuesta opcionRespuesta) {repository.delete(opcionRespuesta);}
     /**
      * Busca registros por coincidencia parcial
      */
@@ -85,12 +73,18 @@ public class OpcionRespuestaDaoImpl implements IOpcionRespuestaDao {
     public List<OpcionRespuesta> obtenerPorNombreParcial(String texto) {
         return repository.findByNombreContaining(texto);
     }
-
     /**
      * Busca registros sin distinguir entre  mayúsculas y minúsculas (case-insensitive).
      */
-    @Override
     public boolean existePorNombreInsensible(String nombre) {
         return repository.existsByNombreIgnoreCase(nombre);
+    }
+    public OpcionRespuesta obtenerPorId(Long id) {
+        return repository.findByIdOrThrow(id,"la opcion de respuesta");
+    }
+
+
+    public void existePorId(Long id) {
+        repository.existsByIdOrThrow(id,"la opcion de respuesta");
     }
 }
